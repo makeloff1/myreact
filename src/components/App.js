@@ -32,8 +32,8 @@ const App = () => {
       </form>
 
       <h4>イベント一覧</h4>
-      <table class="table">
-        <thead class="thead-light">
+      <table className="table">
+        <thead className="thead-light">
           <tr>
             <th scope="col">#</th>
             <th scope="col">First</th>
