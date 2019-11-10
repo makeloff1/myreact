@@ -12,8 +12,8 @@ const App = () => {
   const addEvent = e => {
     e.preventDefault()
     console.log("addEvent")
-    console.log({title, body})
-    
+    console.log({ title, body })
+
     dispatch({
       type: 'CREATE_EVENT',
       title,
@@ -24,7 +24,18 @@ const App = () => {
     setBody('')
   }
 
-  console.log({state})
+  const deleteAllEvents = e => {
+    e.preventDefault()
+    const result = window.confirm("本当にイベントを全削除しますか？")
+    if (result) {
+      dispatch({
+        type: 'DELETE_ALL_EVENTS',
+      })
+    }
+  }
+
+  const unCreatable = title === '' || body === ''
+  const unDeletable = state.length === 0
 
   return (
     <div className="container-fluid">
@@ -51,8 +62,8 @@ const App = () => {
           <input type="checkbox" className="form-check-input" id="exampleCheck1" />
           <label className="form-check-label" htmlFor="exampleCheck1">Check me out</label>
         </div>
-        <button className="btn btn-primary" onClick={addEvent}>Submit</button>
-        <button type="submit" className="btn btn-danger">Reset</button>
+        <button className="btn btn-primary" onClick={addEvent} disabled={unCreatable}>Submit</button>
+        <button type="submit" className="btn btn-danger" onClick={deleteAllEvents} disabled={unDeletable}>Reset</button>
       </form>
 
       <h4>イベント一覧</h4>
@@ -66,7 +77,7 @@ const App = () => {
           </tr>
         </thead>
         <tbody>
-          { state.map((event, index) => (<Event key={index} event={event} dispatch={dispatch} />))}
+          {state.map((event, index) => (<Event key={index} event={event} dispatch={dispatch} />))}
         </tbody>
       </table>
     </div>
