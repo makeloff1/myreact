@@ -1,18 +1,40 @@
-import React from 'react';
+import React, { useReducer, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import reducer from '../reducers/index'
 
 const App = () => {
+  const [state, dispatch] = useReducer(reducer, [], () => console.log("dispatch!"))
+  const [title, setTitle] = useState("")
+  const [body, setBody] = useState("")
+
+  const addEvent = e => {
+    e.preventDefault()
+    console.log("addEvent")
+    console.log({title, body})
+    
+    dispatch({
+      type: 'CREATE_EVENT',
+      title,
+      body
+    })
+
+    setTitle('')
+    setBody('')
+  }
+
+  console.log({state})
+
   return (
     <div className="container-fluid">
       <h4>イベント作成フォーム</h4>
       <form>
         <div className="form-group">
           <label htmlFor="formEventTitle">Title</label>
-          <input className="form-control" id="formEventTitle" />
+          <input className="form-control" id="formEventTitle" value={title} onChange={e => setTitle(e.target.value)} />
         </div>
         <div className="form-group">
           <label htmlFor="formEventBody">Body</label>
-          <textarea className="form-control" id="formEventBody" />
+          <textarea className="form-control" id="formEventBody" value={body} onChange={e => setBody(e.target.value)} />
         </div>
         <div className="form-group">
           <label htmlFor="exampleInputEmail1">Email address</label>
@@ -27,7 +49,7 @@ const App = () => {
           <input type="checkbox" className="form-check-input" id="exampleCheck1" />
           <label className="form-check-label" htmlFor="exampleCheck1">Check me out</label>
         </div>
-        <button type="submit" className="btn btn-primary">Submit</button>
+        <button className="btn btn-primary" onClick={addEvent}>Submit</button>
         <button type="submit" className="btn btn-danger">Reset</button>
       </form>
 
