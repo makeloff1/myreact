@@ -1,0 +1,1 @@
+export const timeDate = () => (new Date()).toISOString()
