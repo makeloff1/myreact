@@ -1,10 +1,13 @@
 import React, { useState, useContext } from 'react'
 import {
     CREATE_EVENT,
-    DELETE_ALL_EVENTS
+    DELETE_ALL_EVENTS,
+    ADD_OPERATION_LOG,
+    DELETE_ALL_OPERATION_LOGS
 } from '../actions'
 
 import AppContext from '../contexts/AppContext'
+import {timeDate} from '../utils'
 
 const EventForm = () => {
     const { state, dispatch } = useContext(AppContext)
@@ -19,6 +22,12 @@ const EventForm = () => {
             body
         })
 
+        dispatch({
+            type: ADD_OPERATION_LOG,
+            description: 'add event',
+            operatedAt: timeDate()
+        })
+
         setTitle('')
         setBody('')
     }
@@ -30,11 +39,30 @@ const EventForm = () => {
             dispatch({
                 type: DELETE_ALL_EVENTS,
             })
+            dispatch({
+                type:ADD_OPERATION_LOG,
+                description: 'delete all events',
+                operatedAt: timeDate()
+            })
+        }
+
+    }
+
+    const deleteAllOperationLogs = e => {
+        e.preventDefault()
+        const result = window.confirm("本当に操作ログを全削除しますか？")
+        if (result) {
+            dispatch({
+                type: DELETE_ALL_OPERATION_LOGS,
+                description: 'delete all events',
+                operatedAt: timeDate()
+            })
         }
     }
 
     const unCreatable = title === '' || body === ''
     const unDeletable = state.events.length === 0
+    const unDeletableOperationLogs = state.operationLogs.length === 0
 
     return (
         <>
@@ -64,6 +92,7 @@ const EventForm = () => {
                     </div>
                     <button className="btn btn-primary" onClick={addEvent} disabled={unCreatable}>Submit</button>
                     <button type="submit" className="btn btn-danger" onClick={deleteAllEvents} disabled={unDeletable}>Reset</button>
+                    <button type="submit" className="btn btn-danger" onClick={deleteAllOperationLogs} disabled={unDeletableOperationLogs}>Reset</button>
                 </form>
             </div>
         </>
