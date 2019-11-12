@@ -34,7 +34,7 @@ const EventForm = () => {
     }
 
     const unCreatable = title === '' || body === ''
-    const unDeletable = state.length === 0
+    const unDeletable = state.events.length === 0
 
     return (
         <>
